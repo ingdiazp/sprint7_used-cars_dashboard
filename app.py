@@ -4,6 +4,7 @@ import plotly.express as px
 
 # Cargar datos
 df = pd.read_csv("data/vehicles_us.csv", header=0)
+st.write("Columnas disponibles:", df.columns.tolist())
 
 # Título y descripción general
 st.title("Panel de análisis de vehículos usados")
