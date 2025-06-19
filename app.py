@@ -31,8 +31,14 @@ st.plotly_chart(fig_hist, use_container_width=True)
 # Checkbox para mostrar gráfico de dispersión
 if st.checkbox("Mostrar gráfico de dispersión (price vs. odometer)"):
     st.subheader("Relación entre precio y kilometraje")
-    fig_scatter = px.scatter(df_filtered, x="odometer", y="price", color="condition",
-                             hover_data=["year", "type"], title="Dispersión: Precio vs Kilometraje")
+    fig_scatter = px.scatter(
+    df_filtered,
+    x="odometer",
+    y="price",
+    color="condition",
+    hover_data=["year"],  # ← solo esta columna porque sí existe
+    title="Dispersión: Precio vs Kilometraje"
+)
     st.plotly_chart(fig_scatter, use_container_width=True)
 
 # Comentarios técnicos
