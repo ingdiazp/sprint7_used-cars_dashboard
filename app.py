@@ -11,8 +11,8 @@ st.title("Panel de análisis de vehículos usados")
 st.markdown("Esta app interactiva permite explorar datos de vehículos usados con filtros dinámicos y visualizaciones con Plotly.")
 
 # Filtro por año de modelo
-year_range = st.slider("Selecciona el rango de años del modelo:", int(df['model_year'].min()), int(df['model_year'].max()), (2010, 2015))
-df_filtered = df[(df['model_year'] >= year_range[0]) & (df['model_year'] <= year_range[1])]
+year_range = st.slider("Selecciona el rango de años del modelo:", int(df['year'].min()), int(df['year'].max()), (2010, 2015))
+df_filtered = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
 
 # Selectbox doble (fabricante y variable)
 manufacturers = df['manufacturer'].dropna().unique()
@@ -32,7 +32,7 @@ st.plotly_chart(fig_hist, use_container_width=True)
 if st.checkbox("Mostrar gráfico de dispersión (price vs. odometer)"):
     st.subheader("Relación entre precio y kilometraje")
     fig_scatter = px.scatter(df_filtered, x="odometer", y="price", color="condition",
-                             hover_data=["model_year", "type"], title="Dispersión: Precio vs Kilometraje")
+                             hover_data=["year", "type"], title="Dispersión: Precio vs Kilometraje")
     st.plotly_chart(fig_scatter, use_container_width=True)
 
 # Comentarios técnicos
