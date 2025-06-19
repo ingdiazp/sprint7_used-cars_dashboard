@@ -15,12 +15,12 @@ year_range = st.slider("Selecciona el rango de años del modelo:", int(df['year'
 df_filtered = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
 
 # Selectbox doble (fabricante y variable)
-manufacturers = df['manufacturer'].dropna().unique()
+manufacturers = df['brand'].dropna().unique()
 variables = ['price', 'odometer', 'days_listed']
 selected_manu = st.selectbox("Selecciona el fabricante:", manufacturers)
 selected_var = st.selectbox("Selecciona la variable a analizar:", variables)
 
-df_filtered = df_filtered[df_filtered['manufacturer'] == selected_manu]
+df_filtered = df_filtered[df_filtered['brand'] == selected_manu]
 
 # Histograma con histnorm='percent'
 st.subheader("Distribución porcentual del valor seleccionado")
