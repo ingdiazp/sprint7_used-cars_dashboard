@@ -1,11 +1,13 @@
 
+
 import pandas as pd
 import streamlit as st
 import plotly.express as px
 
 # Cargar datos
 car_data = pd.read_csv('data/vehicles_us_full.csv')
-
+# car_data = pd.concat([car_data] * 20, ignore_index=True)
+# st.write("Columnas disponibles:", car_data.columns.tolist())
 # Tabla con scroll
 st.header('🚗 Tabla de Vehículos con Scroll')
 st.dataframe(car_data, height=400)
@@ -19,31 +21,47 @@ fig_bar = px.bar(
 st.plotly_chart(fig_bar, use_container_width=True)
 
 # Histograma individual con checkbox
-st.header('📈 Histograma: Odómetro')
-if st.checkbox('Mostrar histograma de odómetro'):
-    fig_hist = px.histogram(car_data, x='odometer', histnorm='percent')
+st.header('📊 Histograma de Odómetro por Condición')
+
+if st.checkbox('Mostrar histograma detallado'):
+    fig_hist = px.histogram(
+        car_data,
+        x='odometer',
+        color='condition',
+        histnorm='percent',
+        barmode='overlay',
+        nbins=30,
+        opacity=0.7
+    )
     st.plotly_chart(fig_hist, use_container_width=True)
 
 # Segundo histograma comparativo con separador de pestañas
-st.header('📊 Comparador de histogramas por fabricante')
-fabricantes = car_data['manufacturer'].dropna().unique()
+st.header('📊 Comparador de histogramas superpuestos por fabricante')
+
+# Lista de fabricantes únicos
+fabricantes = car_data['brand'].dropna().unique()
+
+# Selección de los dos fabricantes
 fab1 = st.selectbox('Selecciona el primer fabricante', fabricantes)
-fab2 = st.selectbox('Selecciona el segundo fabricante', fabricantes, index=1)
+fab2 = st.selectbox('Selecciona el segundo fabricante', fabricantes)
 
-filtered1 = car_data[car_data['manufacturer'] == fab1]
-filtered2 = car_data[car_data['manufacturer'] == fab2]
+# Checkbox para normalizar
+normalize = st.checkbox("Normalizar histograma", value=True)
 
-tab1, tab2 = st.tabs([fab1, fab2])
+# Filtrar datos
+filtered = car_data[car_data['brand'].isin([fab1, fab2])]
 
-with tab1:
-    st.subheader(f'Histograma para {fab1}')
-    fig1 = px.histogram(filtered1, x='odometer', histnorm='percent')
-    st.plotly_chart(fig1, use_container_width=True)
+# Crear histograma superpuesto
+fig = px.histogram(
+    filtered,
+    x='odometer',
+    color='brand',
+    barmode='overlay',  # Para superponer las barras
+    histnorm='percent' if normalize else None
+)
 
-with tab2:
-    st.subheader(f'Histograma para {fab2}')
-    fig2 = px.histogram(filtered2, x='odometer', histnorm='percent')
-    st.plotly_chart(fig2, use_container_width=True)
+# Mostrar gráfico
+st.plotly_chart(fig, use_container_width=True)
 
 # Comentario final
 st.markdown('---')
