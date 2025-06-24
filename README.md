@@ -35,3 +35,4 @@ Este proyecto puede desplegarse en [Render](https://render.com) conectando el re
 
 - **Build Command:** `pip install -r requirements.txt`
 - **Start Command:** `streamlit run app.py`
+🔗 **Aplicación en línea:** [Ver app funcionando en Render](https://sprint7-used-cars-dashboard.onrender.com)
